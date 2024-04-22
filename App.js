@@ -1,23 +1,13 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import Tabs from './src/navigation/tabs'
 import { NavigationContainer } from '@react-navigation/native';
+import Routes from './src/navigation/stack';
 
 const App = () => {
     return (
         <NavigationContainer>
-        <SafeAreaView style={styles.container}>
-            <Tabs />
-        </SafeAreaView>
+            <Routes />
         </NavigationContainer>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-});
 
 export default App;

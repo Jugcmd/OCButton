@@ -21,11 +21,11 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingLeft: 20,
     justifyContent: "flex-start", // Align header to the top
-    height: 300,
+    height: 400,
   },
   image: {
     width: ITEM_WIDTH,
-    height: 300,
+    height: 350,
   },
 });
 

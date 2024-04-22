@@ -4,14 +4,28 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 import CarouselCardItem, {
   SLIDER_WIDTH,
   ITEM_WIDTH,
-} from "../constants/carousel";
+} from "../components/carousel";
 import data from "../constants/data";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  useFonts,
+  Roboto_400Regular,
+  Roboto_400Regular_Italic,
+  Roboto_700Bold,
+} from "@expo-google-fonts/roboto";
 
 const Home = () => {
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(null);
+  let [fontsLoaded] = useFonts({
+    Roboto_400Regular,
+    Roboto_400Regular_Italic,
+    Roboto_700Bold,
+  });
 
+  if (!fontsLoaded) {
+    return <View />;
+  } else {
   return (
     <SafeAreaView>
       <Carousel
@@ -54,12 +68,21 @@ const Home = () => {
       />
 
       <View>
-        <Text style={{ fontSize: 20 }}>Top Stories</Text>
+        <Text style={styles.topStories}>Top Stories</Text>
       </View>
     </SafeAreaView>
   );
+}
 };
 
-const styles = {};
+const styles = {
+
+  topStories: {
+    fontSize: 20,
+    fontFamily: "Roboto_700Bold",
+    paddingLeft: 20,
+    paddingTop: 10,
+  },
+};
 
 export default Home;
