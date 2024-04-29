@@ -39,7 +39,11 @@ const Tabs = () => {
           tabBarLabel: "",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon iconName="newspaper-variant-multiple" focused={focused} label="News" />
+            <TabIcon
+              iconName="newspaper-variant-multiple"
+              focused={focused}
+              label="News"
+            />
           ),
         }}
       />
@@ -61,7 +65,11 @@ const Tabs = () => {
           tabBarLabel: "",
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabIcon iconName="account-circle" focused={focused} label="Profile" />
+            <TabIcon
+              iconName="account-circle"
+              focused={focused}
+              label="Profile"
+            />
           ),
         }}
       />
