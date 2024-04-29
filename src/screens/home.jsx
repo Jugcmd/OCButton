@@ -1,29 +1,30 @@
 import React from "react";
-
-import { Text, View, Image, ScrollView } from "react-native";
-
+import { Text, View, Image, ScrollView, Pressable } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-
 import CarouselCardItem, {
   SLIDER_WIDTH,
   ITEM_WIDTH,
 } from "../components/carousel";
-
 import data from "../constants/carousel-data";
-
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_400Regular_Italic,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
-
 import topStories from "../constants/top-stories"; // Import the top-stories data
+import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
   const [index, setIndex] = React.useState(0); // Index of the carousel
 
   const isCarousel = React.useRef(null); // Reference to the carousel
+
+  const navigation = useNavigation();
+
+  const articleView = () => {
+    navigation.navigate("ArticleView");
+  };
 
   let [fontsLoaded] = useFonts({
     // Load the Roboto font
@@ -86,11 +87,15 @@ const Home = () => {
             (
               story // Map over the top stories and display them
             ) => (
-              <View key={story.id} style={styles.card}>
+              <Pressable
+                key={story.id}
+                style={styles.card}
+                onPress={articleView}
+              >
                 <Image source={{ uri: story.image }} style={styles.image} />
                 <Text style={styles.title}>{story.title}</Text>
                 <Text style={styles.description}>{story.description}</Text>
-              </View>
+              </Pressable>
             )
           )}
         </View>
@@ -142,7 +147,8 @@ const styles = {
     paddingBottom: 30,
     paddingRight: 20,
     paddingLeft: 20,
-    marginTop: 25,
+    marginTop: 15,
+    marginBottom: 15,
     justifyContent: "flex-start",
     height: ITEM_WIDTH / 1.45,
   },
