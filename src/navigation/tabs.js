@@ -15,9 +15,7 @@ const Tabs = () => {
         tabBarStyle: {
           height: "10%",
           width: "100%",
-          bottom: 0,
-          borderTopLeftRadius: 50,
-          borderTopRightRadius: 50,
+          borderRadius: 50,
           backgroundColor: "white",
         },
       }}

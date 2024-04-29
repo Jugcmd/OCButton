@@ -1,15 +1,32 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useState } from 'react';
+import { Modal, View, Text, Button, StyleSheet } from 'react-native';
 
-const Profile = () => {
-    // Your code for the profile modal goes here
+const ProfileModal = () => {
+  const [visible, setVisible] = useState(false);
 
-    return (
-        // JSX code for the profile modal
-        <View>
-            {/* Content of the profile modal */}
+  const openModal = () => setVisible(true);
+  const closeModal = () => setVisible(false);
+
+  return (
+    <>
+      <Button title="Profile" onPress={openModal} />
+      <Modal visible={visible} onRequestClose={closeModal} animationType="slide">
+        <View style={styles.modalView}>
+          <Text>Profile Sidebar Content</Text>
+          <Button title="Close" onPress={closeModal} />
         </View>
-    );
+      </Modal>
+    </>
+  );
 };
 
-export default Profile;
+const styles = StyleSheet.create({
+  modalView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 20,
+  },
+});
+
+export default ProfileModal;

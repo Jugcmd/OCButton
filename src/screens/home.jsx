@@ -1,29 +1,39 @@
 import React from "react";
-
-import { Text, View, Image, ScrollView } from "react-native";
-
+import { createStackNavigator } from "@react-navigation/stack";
+import ArticleListScreen from "../components/ArticleListScreen";
+import ArticleViewScreen from "../components/ArticleViewScreen";
+import {
+  Text,
+  View,
+  Image,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
-
 import CarouselCardItem, {
   SLIDER_WIDTH,
   ITEM_WIDTH,
 } from "../components/carousel";
-
 import data from "../constants/carousel-data";
-
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_400Regular_Italic,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
+import articles from "../../App"; // Import the top-stories data
+import { shadow } from "react-native-paper";
 
-import topStories from "../constants/top-stories"; // Import the top-stories data
+const Stack = createStackNavigator();
 
-const Home = () => {
+const Home = ({ articles }) => {
   const [index, setIndex] = React.useState(0); // Index of the carousel
 
   const isCarousel = React.useRef(null); // Reference to the carousel
+
+  const navigation = useNavigation();
 
   let [fontsLoaded] = useFonts({
     // Load the Roboto font
@@ -38,72 +48,75 @@ const Home = () => {
   } else {
     // If the fonts are loaded, return the carousel and top stories
     return (
-      <ScrollView>
-        <Carousel
-          layout="default"
-          layoutCardOffset={0}
-          ref={isCarousel}
-          data={data}
-          renderItem={CarouselCardItem}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          onSnapToItem={(index) => setIndex(index)}
-          useScrollView={true}
-          autoplay={true}
-          autoplayInterval={10000}
-          enableMomentum={false}
-          loop={true}
-        />
-        <Pagination
-          dotsLength={data.length}
-          activeDotIndex={index}
-          carouselRef={isCarousel}
-          dotStyle={{
-            width: 10,
-            height: 10,
-            borderRadius: 5,
-            marginHorizontal: 0,
-            backgroundColor: "#083144",
-          }}
-          containerStyle={{
-            bottom: 30,
-            backgroundColor: "rgba(119,116,116,0.2)",
-            paddingVertical: 5,
-            borderRadius: 30,
-            width: "30%",
-            alignSelf: "center",
-          }}
-          inactiveDotOpacity={0.4}
-          inactiveDotScale={0.6}
-          tappableDots={true}
-        />
+      <SafeAreaView>
+        <ScrollView>
+          <Carousel
+            layout="default"
+            layoutCardOffset={0}
+            ref={isCarousel}
+            data={data}
+            renderItem={CarouselCardItem}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={ITEM_WIDTH}
+            onSnapToItem={(index) => setIndex(index)}
+            useScrollView={true}
+            autoplay={true}
+            autoplayInterval={10000}
+            enableMomentum={false}
+            loop={true}
+          />
+          <Pagination
+            dotsLength={data.length}
+            activeDotIndex={index}
+            carouselRef={isCarousel}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 0,
+              backgroundColor: "#083144",
+            }}
+            containerStyle={{
+              bottom: 30,
+              backgroundColor: "rgba(119,116,116,0.2)",
+              paddingVertical: 5,
+              borderRadius: 30,
+              width: "30%",
+              alignSelf: "center",
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+            tappableDots={true}
+          />
 
-        <View>
-          <Text style={styles.topStories}>Top Stories</Text>
-        </View>
-        <View>
-          {topStories.map(
-            (
-              story // Map over the top stories and display them
-            ) => (
-              <View key={story.id} style={styles.card}>
-                <Image source={{ uri: story.image }} style={styles.image} />
-                <Text style={styles.title}>{story.title}</Text>
-                <Text style={styles.description}>{story.description}</Text>
-              </View>
-            )
-          )}
-        </View>
-      </ScrollView>
+          <View>
+            <Text style={styles.topStories}>Top Stories</Text>
+          </View>
+          {articles.map((article) => (
+            <TouchableOpacity
+              key={article.id}
+              onPress={() => navigation.navigate("ArticleView", { article })}
+            >
+              <Text>{article.title}</Text>
+            </TouchableOpacity>
+          ))}
+          <Stack.Navigator>
+            <Stack.Screen name="ArticleList">
+              {(props) => <ArticleListScreen {...props} articles={articles} />}
+            </Stack.Screen>
+            <Stack.Screen name="ArticleView" component={ArticleViewScreen} />
+          </Stack.Navigator>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 };
 
 const styles = {
   topStories: {
-    fontSize: 20,
+    fontSize: 26,
     fontFamily: "Roboto_700Bold",
-    paddingLeft: 20,
+    paddingLeft: 30,
     paddingTop: 20,
   },
 
@@ -142,9 +155,15 @@ const styles = {
     paddingBottom: 30,
     paddingRight: 20,
     paddingLeft: 20,
-    marginTop: 25,
+    marginTop: 15,
+    marginBottom: 15,
     justifyContent: "flex-start",
     height: ITEM_WIDTH / 1.45,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 2,
   },
 };
 
