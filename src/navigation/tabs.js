@@ -1,8 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Text, View } from "react-native";
+import TabIcon from "../components/tabIcon";
 import Home from "../screens/home";
+import News from "../screens/news";
+import Search from "../screens/search";
+import Profile from "../screens/profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -11,9 +13,12 @@ const Tabs = () => {
     <Tab.Navigator
       screenOptions={{
         tabBarStyle: {
-          height: 100,
-          borderRadius: 50,
-          backgroundColor: "#FB5A17",
+          height: "10%",
+          width: "100%",
+          bottom: 0,
+          borderTopLeftRadius: 50,
+          borderTopRightRadius: 50,
+          backgroundColor: "white",
         },
       }}
     >
@@ -25,16 +30,40 @@ const Tabs = () => {
           headerShown: false,
 
           tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center", justifyContent: "center" }}>
-              <MaterialCommunityIcons
-                name="home-roof"
-                color={focused ? "#fff" : "#f7f7f7"}
-                size={40}
-              />
-              <Text style={{ fontSize: 18, color: focused ? "white" : "green" }}>
-                Home
-              </Text>
-            </View>
+            <TabIcon iconName="home" focused={focused} label="Home" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="News"
+        component={News}
+        options={{
+          tabBarLabel: "",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon iconName="newspaper-variant-multiple" focused={focused} label="News" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          tabBarLabel: "",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon iconName="magnify" focused={focused} label="Search" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: "",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon iconName="account-circle" focused={focused} label="Profile" />
           ),
         }}
       />
