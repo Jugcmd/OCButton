@@ -15,6 +15,8 @@ import {
   Roboto_400Regular_Italic,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
+import B2CAuthentication from "../constants/ReactNativeADB2C";
+import LoginView from "../components/LoginView";
 
 const Login = () => {
   let [fontsLoaded] = useFonts({
@@ -25,10 +27,24 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const handleSignIn = () => {
-    // handle sign in
+  const onLoginSuccess = (credentials) => {
+    console.log("onLoginSuccess");
+    console.log(credentials);
     navigation.navigate("Home");
-  };
+  }
+
+  const handleSignIn = new B2CAuthentication({
+      tenant: 'ocbutton.onmicrosoft.com',
+      client_id: "b8a99997-6377-4e37-8638-c150eeec8a56",
+      client_secret: "o3g8Q~KQtQ3bsgwOQWp~3vA2yc_HQYwqvWmYGbA6",
+      user_flow_policy: "B2C_1_SIGNIN",
+      reset_password_policy: 'B2C_1_RESETPASSWD',
+      token_uri: "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/oauth2/v2.0/token",
+      authority_host: "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/oauth2/v2.0/authorize",
+      redirect_uri: "http://localhost:5554/",
+      prompt: "login",
+      scope: ["https://ocbutton.onmicrosoft.com/api/offline_access", "offline_access"]
+    });
 
   if (!fontsLoaded) {
     return <View />;
@@ -36,6 +52,7 @@ const Login = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.top}>
+          
           {/* Logo/Top Banner */}
 
           <Image
@@ -67,7 +84,7 @@ const Login = () => {
 
           {/* Sign in button */}
 
-          <Pressable
+          {/* <Pressable
             onPress={handleSignIn}
             style={({ pressed }) => [
               styles.signInBtn,
@@ -75,9 +92,14 @@ const Login = () => {
             ]}
           >
             <Text style={styles.signInText}>Sign in</Text>
-          </Pressable>
-        </View>
+          </Pressable> */}
 
+        <LoginView
+        context={handleSignIn}
+        onSuccess={(credentials)=>onLoginSuccess(credentials)}
+        />
+        </View>
+            
         {/* Bottom Banner/Forgot Password */}
 
         <View style={styles.bottom}>
