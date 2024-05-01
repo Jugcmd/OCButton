@@ -20,11 +20,7 @@ const Home = () => {
 
   const isCarousel = React.useRef(null); // Reference to the carousel
 
-  const navigation = useNavigation();
-
-  const articleView = () => {
-    navigation.navigate("ArticleView");
-  };
+  const navigation = useNavigation();  
 
   let [fontsLoaded] = useFonts({
     // Load the Roboto font
@@ -90,7 +86,9 @@ const Home = () => {
               <Pressable
                 key={story.id}
                 style={styles.card}
-                onPress={articleView}
+                onPress={() =>
+                  navigation.navigate("ArticleView", { id: story.id }) //Navigate to the article view screen with the id of the story
+                }
               >
                 <Image source={{ uri: story.image }} style={styles.image} />
                 <Text style={styles.title}>{story.title}</Text>

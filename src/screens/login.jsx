@@ -8,15 +8,29 @@ import {
   SafeAreaView,
   Text,
   View,
+  Platform
 } from "react-native";
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri, useAuthRequest, ResponseType } from 'expo-auth-session';
+import * as Random from 'expo-random';
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_400Regular_Italic,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
-import B2CAuthentication from "../constants/ReactNativeADB2C";
-import LoginView from "../components/LoginView";
+
+
+WebBrowser.maybeCompleteAuthSession();
+
+const discovery = {
+  authorizationEndpoint: 'https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/authorize',
+  tokenEndpoint: 'https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/token',
+  revocationEndpoint: 'https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/logout',
+};
+
+const useProxy = Platform.select({ web: false, default: true });
+const redirectUri = makeRedirectUri({ native: 'http://localhost:8081'});
 
 const Login = () => {
   let [fontsLoaded] = useFonts({
@@ -27,24 +41,40 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const onLoginSuccess = (credentials) => {
+  const onLoginSuccess = () => {
     console.log("onLoginSuccess");
-    console.log(credentials);
+    console.log(navigation);
     navigation.navigate("Home");
   }
+  
+  const [randomNonce, setRandomNonce] = React.useState(null);
 
-  const handleSignIn = new B2CAuthentication({
-      tenant: 'ocbutton.onmicrosoft.com',
-      client_id: "b8a99997-6377-4e37-8638-c150eeec8a56",
-      client_secret: "o3g8Q~KQtQ3bsgwOQWp~3vA2yc_HQYwqvWmYGbA6",
-      user_flow_policy: "B2C_1_SIGNIN",
-      reset_password_policy: 'B2C_1_RESETPASSWD',
-      token_uri: "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/oauth2/v2.0/token",
-      authority_host: "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/oauth2/v2.0/authorize",
-      redirect_uri: "http://localhost:5554/",
-      prompt: "login",
-      scope: ["https://ocbutton.onmicrosoft.com/api/offline_access", "offline_access"]
+  React.useEffect(() => {
+    Random.getRandomBytesAsync(16).then(bytes => {
+      const nonce = bytes.map(b => b.toString(16).padStart(2, '0')).join('');
+      setRandomNonce(nonce);
     });
+  }, []);
+
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: 'b8a99997-6377-4e37-8638-c150eeec8a56',
+      scopes: ['openid', 'profile', 'email'],
+      // For usage in managed apps using the proxy
+      redirectUri,
+      responseType: ResponseType.Token,
+      nonce: randomNonce,
+    },
+    discovery
+  );
+
+  React.useEffect(() => {
+    console.log("response", response);
+    if (response?.type === 'success') {
+      onLoginSuccess();
+    }
+  }, [response]);
+  
 
   if (!fontsLoaded) {
     return <View />;
@@ -84,21 +114,17 @@ const Login = () => {
 
           {/* Sign in button */}
 
-          {/* <Pressable
-            onPress={handleSignIn}
+          <Pressable
+            disabled={!request}
+            onPress={navigation.navigate("Home")}
             style={({ pressed }) => [
               styles.signInBtn,
               pressed ? styles.signInBtnPressed : null,
             ]}
           >
             <Text style={styles.signInText}>Sign in</Text>
-          </Pressable> */}
-
-        <LoginView
-        context={handleSignIn}
-        onSuccess={(credentials)=>onLoginSuccess(credentials)}
-        />
-        </View>
+          </Pressable>
+          </View>
             
         {/* Bottom Banner/Forgot Password */}
 
