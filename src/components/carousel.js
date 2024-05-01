@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingLeft: 20,
     marginTop: 25,
-    justifyContent: "flex-start", // Align header to the top
+    justifyContent: "flex-start",
+    alignSelf: "center", // Align header to the top
     height: 300,
   },
   image: {

@@ -12,7 +12,7 @@ import {
   Roboto_400Regular_Italic,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
-import topStories from "../constants/top-stories"; // Import the top-stories data
+import topStories from "../constants/articles"; // Import the top-stories data
 import { useNavigation } from "@react-navigation/native";
 
 const Home = () => {
@@ -20,7 +20,7 @@ const Home = () => {
 
   const isCarousel = React.useRef(null); // Reference to the carousel
 
-  const navigation = useNavigation();  
+  const navigation = useNavigation();
 
   let [fontsLoaded] = useFonts({
     // Load the Roboto font
@@ -64,7 +64,7 @@ const Home = () => {
           }}
           containerStyle={{
             bottom: 30,
-            backgroundColor: "rgba(119,116,116,0.2)",
+            backgroundColor: "rgba(999, 999, 999, 0.8)",
             paddingVertical: 5,
             borderRadius: 30,
             width: "30%",
@@ -86,8 +86,8 @@ const Home = () => {
               <Pressable
                 key={story.id}
                 style={styles.card}
-                onPress={() =>
-                  navigation.navigate("ArticleView", { id: story.id }) //Navigate to the article view screen with the id of the story
+                onPress={
+                  () => navigation.navigate("ArticleView", { id: story.id }) //Navigate to the article view screen with the id of the story
                 }
               >
                 <Image source={{ uri: story.image }} style={styles.image} />
@@ -104,7 +104,7 @@ const Home = () => {
 
 const styles = {
   topStories: {
-    fontSize: 20,
+    fontSize: 26,
     fontFamily: "Roboto_700Bold",
     paddingLeft: 20,
     paddingTop: 20,
@@ -149,6 +149,7 @@ const styles = {
     marginBottom: 15,
     justifyContent: "flex-start",
     height: ITEM_WIDTH / 1.45,
+    overflow: "hidden",
   },
 };
 
