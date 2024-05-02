@@ -8,11 +8,15 @@ import {
   SafeAreaView,
   Text,
   View,
-  Platform
+  Platform,
 } from "react-native";
-import * as WebBrowser from 'expo-web-browser';
-import { makeRedirectUri, useAuthRequest, ResponseType } from 'expo-auth-session';
-import * as Random from 'expo-random';
+import * as WebBrowser from "expo-web-browser";
+import {
+  makeRedirectUri,
+  useAuthRequest,
+  ResponseType,
+} from "expo-auth-session";
+import * as Random from "expo-random";
 import {
   useFonts,
   Roboto_400Regular,
@@ -20,17 +24,19 @@ import {
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
 
-
 WebBrowser.maybeCompleteAuthSession();
 
 const discovery = {
-  authorizationEndpoint: 'https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/authorize',
-  tokenEndpoint: 'https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/token',
-  revocationEndpoint: 'https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/logout',
+  authorizationEndpoint:
+    "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/authorize",
+  tokenEndpoint:
+    "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/token",
+  revocationEndpoint:
+    "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/logout",
 };
 
 const useProxy = Platform.select({ web: false, default: true });
-const redirectUri = makeRedirectUri({ native: 'http://localhost:8081'});
+const redirectUri = makeRedirectUri({ native: "http://localhost:8081" });
 
 const Login = () => {
   let [fontsLoaded] = useFonts({
@@ -45,7 +51,7 @@ const Login = () => {
     console.log("onLoginSuccess");
     console.log(navigation);
     navigation.navigate("Home");
-  }
+  };
 
   if (!fontsLoaded) {
     return <View />;
@@ -53,7 +59,6 @@ const Login = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.top}>
-          
           {/* Logo/Top Banner */}
 
           <Image
@@ -95,8 +100,8 @@ const Login = () => {
           >
             <Text style={styles.signInText}>Sign in</Text>
           </Pressable>
-          </View>
-            
+        </View>
+
         {/* Bottom Banner/Forgot Password */}
 
         <View style={styles.bottom}>

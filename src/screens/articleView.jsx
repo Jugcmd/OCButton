@@ -16,14 +16,18 @@ const ArticleView = ({ route }) => {
 
   let [fontsLoaded] = useFonts({
     Roboto_400Regular,
-    Roboto_500Medium,    
+    Roboto_500Medium,
     Roboto_700Bold,
   });
+
   if (!fontsLoaded) {
     return <View />;
   } else {
     return (
-      <ScrollView contentContainerStyle={{justifyContent: "center"}} style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{ justifyContent: "center" }}
+        style={styles.container}
+      >
         <Text style={styles.title}>
           {article ? article.title : "Article not found"}
         </Text>
