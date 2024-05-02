@@ -46,35 +46,6 @@ const Login = () => {
     console.log(navigation);
     navigation.navigate("Home");
   }
-  
-  // const [randomNonce, setRandomNonce] = React.useState(null);
-
-  // React.useEffect(() => {
-  //   Random.getRandomBytesAsync(16).then(bytes => {
-  //     const nonce = bytes.map(b => b.toString(16).padStart(2, '0')).join('');
-  //     setRandomNonce(nonce);
-  //   });
-  // }, []);
-
-  // const [request, response, promptAsync] = useAuthRequest(
-  //   {
-  //     clientId: 'b8a99997-6377-4e37-8638-c150eeec8a56',
-  //     scopes: ['openid', 'profile', 'email'],
-  //     // For usage in managed apps using the proxy
-  //     redirectUri,
-  //     responseType: ResponseType.Token,
-  //     nonce: randomNonce,
-  //   },
-  //   discovery
-  // );
-
-  // React.useEffect(() => {
-  //   console.log("response", response);
-  //   if (response?.type === 'success') {
-  //     onLoginSuccess();
-  //   }
-  // }, [response]);
-  
 
   if (!fontsLoaded) {
     return <View />;
