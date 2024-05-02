@@ -56,7 +56,6 @@ const Login = () => {
 
   const onLoginSuccess = () => {
     console.log("onLoginSuccess");
-    console.log(navigation);
     navigation.navigate("Home");
   };
 
@@ -66,6 +65,7 @@ const Login = () => {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.top}>
+
           {/* Logo/Top Banner */}
 
           <Image
