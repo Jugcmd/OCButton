@@ -8,15 +8,14 @@ import {
   SafeAreaView,
   Text,
   View,
-  Platform,
 } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import {
+  exchangeCodeAsync,
   makeRedirectUri,
   useAuthRequest,
-  ResponseType,
+  useAutoDiscovery,
 } from "expo-auth-session";
-import * as Random from "expo-random";
 import {
   useFonts,
   Roboto_400Regular,
@@ -26,24 +25,32 @@ import {
 
 WebBrowser.maybeCompleteAuthSession();
 
-const discovery = {
-  authorizationEndpoint:
-    "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/authorize",
-  tokenEndpoint:
-    "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/token",
-  revocationEndpoint:
-    "https://ocbutton.b2clogin.com/ocbutton.onmicrosoft.com/SIGNIN/oauth2/v2.0/logout",
-};
-
-const useProxy = Platform.select({ web: false, default: true });
-const redirectUri = makeRedirectUri({ native: "http://localhost:8081" });
-
 const Login = () => {
   let [fontsLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_400Regular_Italic,
     Roboto_700Bold,
   });
+
+  const discovery = useAutoDiscovery(
+    "https://login.microsoftonline.com/<TENANT-ID>/v2.0"
+  );
+
+  const redirectUri = makeRedirectUri({
+    scheme: undefined,
+    path: "auth",
+  });
+
+  const clientId = "<CLIENT_ID>";
+
+  const [request, , promptAsync] = useAuthRequest(
+    {
+      clientId,
+      scopes: ["openid", "profile", "email", "offline_access"],
+      redirectUri,
+    },
+    discovery
+  );
 
   const navigation = useNavigation();
 
@@ -91,8 +98,26 @@ const Login = () => {
           {/* Sign in button */}
 
           <Pressable
-            // disabled={!request}
-            onPress={onLoginSuccess}
+            disabled={!request}
+            onPress={() =>
+              promptAsync().then((codeResponse) => {
+                if (request && codeResponse?.type === "success" && discovery) {
+                  exchangeCodeAsync(
+                    {
+                      clientId,
+                      code: codeResponse.params.code,
+                      extraParams: request.codeVerifier
+                        ? { code_verifier: request.codeVerifier }
+                        : undefined,
+                      redirectUri,
+                    },
+                    discovery
+                  ).then((res) => {
+                    setToken(res.accessToken), onLoginSuccess();
+                  });
+                }
+              })
+            }
             style={({ pressed }) => [
               styles.signInBtn,
               pressed ? styles.signInBtnPressed : null,
