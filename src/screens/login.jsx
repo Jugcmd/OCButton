@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
@@ -58,6 +58,11 @@ const Login = () => {
     console.log("onLoginSuccess");
     navigation.navigate("Home");
   };
+
+  useEffect(() => {
+    console.log('token', token);
+    if(token) onLoginSuccess();
+  }, [token]);
 
   if (!fontsLoaded) {
     return <View />;
