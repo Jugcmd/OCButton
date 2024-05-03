@@ -11,7 +11,7 @@ const Routes = () => {
     <Stack.Navigator initialRouteName="Login">
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
       <Stack.Screen name="Home" component={Tabs} options={{headerShown: false}} />
-      <Stack.Screen name="ArticleView" component={ArticleView} options={{headerShown: false}} />
+      <Stack.Screen name=" " component={ArticleView} options={{headerShown: true}} />
     </Stack.Navigator>
   );
 };
