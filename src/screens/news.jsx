@@ -36,7 +36,7 @@ const News = () => {
                 key={story.id}
                 style={styles.card}
                 onPress={
-                  () => navigation.navigate("ArticleView", { id: story.id }) //Navigate to the article view screen with the id of the story
+                  () => navigation.navigate(" ", { id: story.id }) //Navigate to the article view screen with the id of the story
                 }
               >
                 <Image source={{ uri: story.image }} style={styles.image} />
@@ -47,7 +47,6 @@ const News = () => {
                 <Icon
                   name="chevron-right"
                   size={40}
-                  color="#000"
                   style={styles.icon}
                 />
               </Pressable>

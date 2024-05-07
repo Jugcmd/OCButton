@@ -49,7 +49,6 @@ const ArticleView = ({ route }) => {
 const styles = {
   container: {
     padding: 20,
-    paddingTop: 50,
     flexDirection: "column",
   },
   title: {

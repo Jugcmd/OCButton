@@ -9,21 +9,12 @@ import {
   Text,
   View,
 } from "react-native";
-import * as WebBrowser from "expo-web-browser";
-import {
-  exchangeCodeAsync,
-  makeRedirectUri,
-  useAuthRequest,
-  useAutoDiscovery,
-} from "expo-auth-session";
 import {
   useFonts,
   Roboto_400Regular,
   Roboto_400Regular_Italic,
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
-
-WebBrowser.maybeCompleteAuthSession();
 
 const Login = () => {
   let [fontsLoaded] = useFonts({
@@ -32,37 +23,12 @@ const Login = () => {
     Roboto_700Bold,
   });
 
-  const discovery = useAutoDiscovery(
-    "https://login.microsoftonline.com/<TENANT-ID>/v2.0"
-  );
-
-  const redirectUri = makeRedirectUri({
-    scheme: undefined,
-    path: "auth",
-  });
-
-  const clientId = "<CLIENT_ID>";
-
-  const [request, , promptAsync] = useAuthRequest(
-    {
-      clientId,
-      scopes: ["openid", "profile", "email", "offline_access"],
-      redirectUri,
-    },
-    discovery
-  );
-
   const navigation = useNavigation();
 
   const onLoginSuccess = () => {
     console.log("onLoginSuccess");
     navigation.navigate("Home");
   };
-
-  useEffect(() => {
-    console.log('token', token);
-    if(token) onLoginSuccess();
-  }, [token]);
 
   if (!fontsLoaded) {
     return <View />;
@@ -103,26 +69,7 @@ const Login = () => {
           {/* Sign in button */}
 
           <Pressable
-            disabled={!request}
-            onPress={() =>
-              promptAsync().then((codeResponse) => {
-                if (request && codeResponse?.type === "success" && discovery) {
-                  exchangeCodeAsync(
-                    {
-                      clientId,
-                      code: codeResponse.params.code,
-                      extraParams: request.codeVerifier
-                        ? { code_verifier: request.codeVerifier }
-                        : undefined,
-                      redirectUri,
-                    },
-                    discovery
-                  ).then((res) => {
-                    setToken(res.accessToken), onLoginSuccess();
-                  });
-                }
-              })
-            }
+            onPress={() => onLoginSuccess()}
             style={({ pressed }) => [
               styles.signInBtn,
               pressed ? styles.signInBtnPressed : null,
@@ -152,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 20,
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "#f2f2f2",
   },
 
   content: {
@@ -160,7 +107,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     alignSelf: "center",
-    backgroundColor: "white",
+    backgroundColor: "#f2f2f2",
   },
 
   top: {
