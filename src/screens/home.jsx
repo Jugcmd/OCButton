@@ -47,7 +47,7 @@ const Home = () => {
           onSnapToItem={(index) => setIndex(index)}
           useScrollView={true}
           autoplay={true}
-          autoplayInterval={10000}
+          autoplayInterval={1000}
           enableMomentum={false}
           loop={true}
         />
@@ -87,7 +87,7 @@ const Home = () => {
                 key={story.id}
                 style={styles.card}
                 onPress={
-                  () => navigation.navigate("ArticleView", { id: story.id }) //Navigate to the article view screen with the id of the story
+                  () => navigation.navigate(" ", { id: story.id }) //Navigate to the article view screen with the id of the story
                 }
               >
                 <Image source={{ uri: story.image }} style={styles.image} />

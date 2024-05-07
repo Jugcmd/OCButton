@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,

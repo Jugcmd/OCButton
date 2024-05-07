@@ -61,13 +61,14 @@ const Search = () => {
             key={result.id}
             onPress={() => navigation.navigate(" ", { id: result.id })}
             style={styles.card}
-          > <View style={styles.cardContainer}>
+          >
+            <View style={styles.cardContainer}>
               <Image source={{ uri: result.image }} style={styles.image} />
               <View style={styles.textContainer}>
                 <Text style={styles.title}>{result.title}</Text>
                 <Text style={styles.description}>{result.description}</Text>
               </View>
-            <Icon name="chevron-right" size={40} style={styles.cardIcon} />
+              <Icon name="chevron-right" size={40} style={styles.cardIcon} />
             </View>
           </Pressable>
         ))}
@@ -103,9 +104,10 @@ const styles = {
   cardContainer: {
     width: "100%",
     alignItems: "center",
+    flexDirection: "row",
   },
   card: {
-    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
     margin: 20,
@@ -122,7 +124,7 @@ const styles = {
   },
   image: {
     width: 100,
-    height: "100%",
+    height: "107%",
     marginRight: 10,
     borderTopLeftRadius: 30,
     borderBottomLeftRadius: 30,
